@@ -1,5 +1,7 @@
-﻿
+﻿using Library.ListManagement.helpers;
 using ListManagement.models;
+using ListManagement.services;
+using Newtonsoft.Json;
 using System2 = System;
 
 namespace ListManagement // Note: actual namespace depends on the project name.
@@ -8,190 +10,155 @@ namespace ListManagement // Note: actual namespace depends on the project name.
     {
         static void Main(string[] args)
         {
-            var items = new List<ToDo>();
-            Console.WriteLine("Welcome to the List Management App!");
-            ToDo nextTodo = new ToDo();
-            
+            var persistencePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\SaveData.json";
+            var itemService = ItemService.Current;
+            //var listNavigator = new ListNavigator<Item>(itemService.Items, 2);
+            Console.WriteLine("Welcome to the List Management App");
 
-            int input = -1;
-            while (input != 7)
-            {
-                    PrintMenu();
-                    if (int.TryParse(Console.ReadLine(), out input)) //==
-                    {
-                    nextTodo = new ToDo();
+            PrintMenu();
+
+            int input;
+            if(int.TryParse(Console.ReadLine(),out input)) {
+                while (input != 7) //==
+                {
+                    ToDo nextTodo = new ToDo();
                     if (input == 1)
                     {
                         //C - Create
                         //ask for property values
-                        Console.WriteLine("Give me a name:");
-                        nextTodo.Name = Console.ReadLine();
-                        Console.WriteLine("Describe the task:");
-                        nextTodo.Description = Console.ReadLine();
-                        Console.WriteLine("When is its deadline? (format MUST BE 'MM/DD/YYYY' )");
-                        var dateString = Console.ReadLine();
-                        try {
-                            nextTodo.Deadline = DateTime.ParseExact(dateString, "d", System.Globalization.CultureInfo.InvariantCulture);
-                        }
-                        catch
-                        {
-                            Console.WriteLine("Invalid Date Format! Try again.");
-                            continue;
-                        }
-                        Console.WriteLine("Is it completed? (true/false - lowercase) ");
-                        var completion = Console.ReadLine();
-                        if (completion == "true" || completion == "false")
-                        {
-                            bool isComplete;
-                            bool.TryParse(completion, out isComplete);
-                            nextTodo.IsCompleted = isComplete;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Invalid Completion Choice! Try again.");
-                            continue;
-                        }
+                        FillProperties(nextTodo);
 
-                        items.Add(nextTodo);
-                        Console.WriteLine("Successfully Added!");
+                        itemService.Add(nextTodo);
+
                     }
                     else if (input == 2)
                     {
                         //D - Delete/Remove
-                        Console.WriteLine("Which item should I delete? (select index, enter to cancel)");
-                        int count = 0;
-                        foreach (var item in items)
-                        {   
-                            Console.WriteLine($"[{count}] {item}"); count++;
-                        }
-                        int strIndex;
+                        Console.WriteLine("Which item should I delete?");
 
-                        if (int.TryParse(Console.ReadLine(), out strIndex) && strIndex >= 0 && strIndex < items.Count)
+                        if(int.TryParse(Console.ReadLine(), out int selection))
                         {
-                            items.RemoveAt(strIndex);
-                            Console.WriteLine("Successfully Removed!");
-                        }
-                        else
+                            var selectedItem = itemService.Items.FirstOrDefault(i => i.Id == selection);
+                            if(selectedItem != null)
+                            {
+                                itemService.Remove(selectedItem);
+                            }
+
+                        } else
                         {
-                           Console.WriteLine("Invalid Item Index! Try again.");
-                           continue;
+                            Console.WriteLine("Sorry, I can't find that item!");
                         }
                     } 
                     else if (input == 3)
                     {
                         //U - Update/Edit
-                        Console.WriteLine("Which item should I edit? (select index)");
-                        int count = 0;
-                        foreach (var item in items)
+                        Console.WriteLine("Which item should I edit?");
+                        if (int.TryParse(Console.ReadLine(), out int selection))
                         {
-                            Console.WriteLine($"[{count}] {item}"); count++;
-                        }
-                        int strIndex;
+                            var selectedItem = itemService.Items[selection - 1] as ToDo;
 
-                        if (int.TryParse(Console.ReadLine(), out strIndex) && strIndex >= 0 && strIndex < items.Count)
-                        {
-
-                            Console.WriteLine("Give me a name:");
-                            nextTodo.Name = Console.ReadLine();
-                            Console.WriteLine("Describe the task:");
-                            nextTodo.Description = Console.ReadLine();
-                            Console.WriteLine("When is its deadline? (format MUST BE 'MM/DD/YYYY' )");
-                            var dateString = Console.ReadLine();
-                            var validDate = false;
-                            try
+                            if(selectedItem != null)
                             {
-                                nextTodo.Deadline = DateTime.ParseExact(dateString, "d", System.Globalization.CultureInfo.InvariantCulture);
-                                validDate = true;
+                                FillProperties(selectedItem);
                             }
-                            catch
-                            {
-                                Console.WriteLine("Invalid Date Format! Try again.");
-                                continue;
-                            }
-                            Console.WriteLine("Is it completed? (true/false - lowercase) ");
-                            var completion = Console.ReadLine();
-                            if (completion == "true" || completion == "false")
-                            {
-                                bool isComplete;
-                                bool.TryParse(completion, out isComplete);
-                                nextTodo.IsCompleted = isComplete;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Invalid Completion Choice! Try again.");
-                                continue;
-                            }
-
-                            items.RemoveAt(strIndex);
-                            items.Insert(strIndex, nextTodo);
-
-
-                            Console.WriteLine("Successfully Changed!");
                         }
                         else
                         {
-                            Console.WriteLine("Invalid Item Index! Try again.");
-                            continue;
+                            Console.WriteLine("Sorry, I can't find that item!");
                         }
                     }
                     else if (input == 4)
                     {
                         //Complete Task
-                        Console.WriteLine("Which task has been completed? (select index)");
-                        int count = 0;
-                        foreach (var item in items)
+                        Console.WriteLine("Which item should I complete?");
+                        if (int.TryParse(Console.ReadLine(), out int selection))
                         {
-                            Console.WriteLine($"[{count}] {item}"); count++;
-                        }
-                        int strIndex;
-
-                        if (int.TryParse(Console.ReadLine(), out strIndex) && strIndex >= 0 && strIndex < items.Count)
-                        {
-                            items[strIndex].IsCompleted = true;
-                            Console.WriteLine("Successfully Completed!");
+                            var selectedItem = itemService.Items[selection-1] as ToDo;
+                            
+                            if(selectedItem != null)
+                            {
+                                selectedItem.IsCompleted = true;
+                            }
                         }
                         else
                         {
-                            Console.WriteLine("Invalid Item Index! Try again.");
-                            continue;
+                            Console.WriteLine("Sorry, I can't find that item!");
                         }
                     }
-                    else if(input == 5)
+                    else if(input ==5)
                     {
                         //R - Read / List uncompleted tasks
-                        int count = 0;
-                        foreach (var todo in items)
+
+                        //use LINQ
+                        itemService.ShowComplete = false;
+                        var userSelection = string.Empty;
+                        while (userSelection != "E")
                         {
-                            if (todo.IsCompleted == false)
+                            foreach (var item in itemService.GetPage())
                             {
-                                Console.WriteLine($"[{count}] {todo}"); count++;
+                                Console.WriteLine(item);
+                            }
+                            userSelection = Console.ReadLine();
+
+                            if (userSelection == "N")
+                            {
+                                itemService.NextPage();
+                            }
+                            else if (userSelection == "P")
+                            {
+                                itemService.PreviousPage();
                             }
                         }
 
                     } else if (input ==6)
                     {
                         //R - Read / List all tasks
-                        int count = 0;
-                        foreach (var todo in items)
+                        //itemService.Items.ForEach(Console.WriteLine);
+                        itemService.ShowComplete = true;
+                        var userSelection = string.Empty;
+                        while(userSelection != "E")
                         {
-                            Console.WriteLine($"[{count}] {todo}"); count++;
+                            foreach (var item in itemService.GetPage())
+                            {
+                                Console.WriteLine(item);
+                            }
+                            userSelection = Console.ReadLine();
+
+                            if (userSelection == "N")
+                            {
+                                itemService.NextPage();
+                            }
+                            else if (userSelection == "P")
+                            {
+                                itemService.PreviousPage();
+                            }
                         }
-                    } else if (input == 7)
+                        
+
+                    } else if (input ==7)
                     {
-                        Console.WriteLine("Exiting Program. Bye!");
-                        continue;
+                        itemService.Save();
+                    } else if (input == 8)
+                    {
+
                     }
                     else
                     {
                         Console.WriteLine("I don't know what you mean");
                     }
-                }
-                else
-                {
-                    Console.WriteLine("User did not specify a valid int!");
+
+                    PrintMenu();
+                    if(!int.TryParse(Console.ReadLine(), out input))
+                    {
+                        Console.WriteLine("Sorry, I don't understand.");
+                    }
                 }
             }
-
+           else
+            {
+                Console.WriteLine("User did not specify a valid int!");
+            }
+           
             Console.ReadLine();
         }
 
@@ -201,9 +168,23 @@ namespace ListManagement // Note: actual namespace depends on the project name.
             Console.WriteLine("2. Delete Item");
             Console.WriteLine("3. Edit Item");
             Console.WriteLine("4. Complete Item");
-            Console.WriteLine("5. List All Incomplete Tasks");
-            Console.WriteLine("6. List All Tasks");
-            Console.WriteLine("7. Exit");
+            Console.WriteLine("5. List Outstanding");
+            Console.WriteLine("6. List All");
+            Console.WriteLine("7. Save");
+            Console.WriteLine("8. Exit");
+        }
+
+        public static void FillProperties(ToDo todo)
+        {
+            Console.WriteLine("Give me a Name");
+            todo.Name = Console.ReadLine();
+            Console.WriteLine("Give me a Description");
+            todo.Description = Console.ReadLine()?.Trim();
+        }
+
+        public static void AddString(List<string> strList, string str)
+        {
+            strList.Add(str);
         }
     }
 }
