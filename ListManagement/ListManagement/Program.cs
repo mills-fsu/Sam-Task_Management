@@ -12,13 +12,10 @@ namespace ListManagement // Note: actual namespace depends on the project name.
         {
             var persistencePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\SaveData.json";
             var itemService = ItemService.Current;
-            //var listNavigator = new ListNavigator<Item>(itemService.Items, 2);
             Console.WriteLine("Welcome to the List Management App");
 
             PrintMenu();
-
             int input = -1;
-            //if(int.TryParse(Console.ReadLine(),out input)) {
                 while (input != 9) //==
                 {
                     string userChoice = Console.ReadLine();
@@ -28,35 +25,30 @@ namespace ListManagement // Note: actual namespace depends on the project name.
                     if (input == 1)
                     {
 
-                    //C - Create
-                    //ask for property values
-                    Console.WriteLine("Is item an appointment or a task? (A/T)");
-                    string taskChoice = Console.ReadLine();
-                    if (taskChoice == "A")
-                    {
-                        if (FillCalendarProperties(nextAppointment))
+                        //C - Create
+                        //ask for property values
+                        Console.WriteLine("Is item an appointment or a task? (A/T)");
+                        string taskChoice = Console.ReadLine();
+                        if (taskChoice == "A")
                         {
-                            //Console.WriteLine(nextTodo);
-                            itemService.Add(nextAppointment);
-                            Console.WriteLine("------\nSuccessfully Added Appointment!\n------");
+                            if (FillCalendarProperties(nextAppointment))
+                            {
+                                itemService.Add(nextAppointment);
+                                Console.WriteLine("------\nSuccessfully Added Appointment!\n------");
+                            }
                         }
-                    }
-                    else if (taskChoice == "T")
-                    {
-                        if (FillProperties(nextTodo))
+                        else if (taskChoice == "T")
                         {
-                            //Console.WriteLine(nextTodo);
-                            itemService.Add(nextTodo);
-                            Console.WriteLine("------\nSuccessfully Added Task!\n------");
+                            if (FillProperties(nextTodo))
+                            {
+                                itemService.Add(nextTodo);
+                                Console.WriteLine("------\nSuccessfully Added Task!\n------");
+                            }
                         }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid Choice");
-                    }
-
-
-                    
+                        else
+                        {
+                            Console.WriteLine("Invalid Choice");
+                        }
 
                     }
                     else if (input == 2)
@@ -67,7 +59,7 @@ namespace ListManagement // Note: actual namespace depends on the project name.
                         while (userSelection != "E")
                         {
                             Console.WriteLine("Which item should I delete?");
-                            foreach (var item in itemService.GetPage())
+                            foreach (var item in itemService.GetPage().Values)
                             {
                                 Console.WriteLine(item);
                             }
@@ -86,11 +78,10 @@ namespace ListManagement // Note: actual namespace depends on the project name.
                                 itemService.PreviousPage();
                             }
                             else if (userSelection == "E")
-                            { }
+                            { itemService.resetPage(); }
                             else if (int.TryParse(userSelection, out int selection))
                             {
-                                var selectedItem = itemService.Items[selection - 1];
-                                Console.WriteLine(selectedItem);
+                            var selectedItem = (itemService.Items.Find(i => i.Id == selection));
 
 
                                 if (selectedItem != null)
@@ -114,7 +105,7 @@ namespace ListManagement // Note: actual namespace depends on the project name.
                         while (userSelection != "E")
                         {
                             Console.WriteLine("Which item should I edit?");
-                            foreach (var item in itemService.GetPage())
+                            foreach (var item in itemService.GetPage().Values)
                             {
                                 Console.WriteLine(item);
                             }
@@ -133,12 +124,12 @@ namespace ListManagement // Note: actual namespace depends on the project name.
                                 itemService.PreviousPage();
                             }
                             else if (userSelection == "E")
-                            { }
+                            { itemService.resetPage(); }
                             else if (int.TryParse(userSelection, out int selection))
                             {
 
                                 if (itemService.Items[selection - 1] is ToDo) {
-                                    var selectedItem = itemService.Items[selection - 1] as ToDo;
+                                    var selectedItem = (itemService.Items.Find(i => i.Id == selection)) as ToDo;
                                     if (selectedItem != null)
                                         {
                                         FillProperties(selectedItem);
@@ -147,7 +138,7 @@ namespace ListManagement // Note: actual namespace depends on the project name.
                                 }
                                 else
                                 {
-                                    var selectedItem = itemService.Items[selection - 1] as Appointment;
+                                var selectedItem = (itemService.Items.Find(i => i.Id == selection)) as Appointment;
                                     if (selectedItem != null)
                                     {
                                         FillCalendarProperties(selectedItem);
@@ -173,13 +164,13 @@ namespace ListManagement // Note: actual namespace depends on the project name.
                         while (userSelection != "E")
                         {
                             Console.WriteLine("Which item should I complete?");
-                            foreach (var item in itemService.GetPage())
+                            foreach (var item in itemService.GetPage().Values)
                             {
                                 Console.WriteLine(item);
                             }
                             if (itemService.GetPage().Count() == 0)
                             {
-                                Console.WriteLine("There are currently no tasks.");
+                                Console.WriteLine("There are currently no incomplete tasks.");
                             }
                             Console.WriteLine("------\nN - Next Page\nP - Previous Page\nE - Exit to Menu\n------");
                             userSelection = Console.ReadLine();
@@ -192,11 +183,11 @@ namespace ListManagement // Note: actual namespace depends on the project name.
                                 itemService.PreviousPage();
                             }
                             else if (userSelection == "E")
-                            { }
+                            { itemService.resetPage(); }
                             else if (int.TryParse(userSelection, out int selection))
                             {
-                                var selectedItem = itemService.Items[selection - 1] as ToDo;
-                                Console.WriteLine(selectedItem);
+                                var selectedItem = (itemService.Items.Find(i => i.Id == selection)) as ToDo;
+                                Console.WriteLine(selectedItem.Id);
 
                                 if (selectedItem != null)
                                 {
@@ -221,13 +212,13 @@ namespace ListManagement // Note: actual namespace depends on the project name.
                         var userSelection = string.Empty;
                         while (userSelection != "E")
                         {
-                            foreach (var item in itemService.GetPage())
+                            foreach (var item in itemService.GetPage().Values)
                             {
                                 Console.WriteLine(item);
                             }
                             if (itemService.GetPage().Count() == 0)
                             {
-                                Console.WriteLine("There are no uncompleted tasks.");
+                                Console.WriteLine("There are no incomplete tasks.");
                             }
                             Console.WriteLine("------\nN - Next Page\nP - Previous Page\nE - Exit to Menu\n------");
                             userSelection = Console.ReadLine();
@@ -240,23 +231,24 @@ namespace ListManagement // Note: actual namespace depends on the project name.
                             {
                                 itemService.PreviousPage();
                             }
-                        }
+                            else if (userSelection == "E")
+                            { itemService.resetPage(); }
+                    }
 
                     } else if (input ==6)
                     {
                         //R - Read / List all tasks
-                        //itemService.Items.ForEach(Console.WriteLine);
                         itemService.ShowComplete = true;
                         var userSelection = string.Empty;
                         while(userSelection != "E")
                         {
-                            foreach (var item in itemService.GetPage())
+                            foreach (var item in itemService.GetPage().Values)
                             {
                                 Console.WriteLine(item);
                             }
                             if (itemService.GetPage().Count() == 0)
                             {
-                                Console.WriteLine("There are no tasks.");
+                                Console.WriteLine("There are no tasks/appointments.");
                             }
                             Console.WriteLine("------\nN - Next Page\nP - Previous Page\nE - Exit to Menu\n------");
                             userSelection = Console.ReadLine();
@@ -269,7 +261,9 @@ namespace ListManagement // Note: actual namespace depends on the project name.
                             {
                                 itemService.PreviousPage();
                             }
-                        }
+                            else if (userSelection == "E")
+                            { itemService.resetPage(); }
+                    }
                         
 
                     } else if (input ==7)
@@ -284,7 +278,7 @@ namespace ListManagement // Note: actual namespace depends on the project name.
                         var userSelection = string.Empty;
                         while (userSelection != "E")
                         {
-                            foreach (var item in itemService.GetPage())
+                            foreach (var item in itemService.GetPage().Values)
                             {
                                 Console.WriteLine(item);
                             }
@@ -303,8 +297,10 @@ namespace ListManagement // Note: actual namespace depends on the project name.
                             {
                                 itemService.PreviousPage();
                             }
-                        }
-                        itemService.Search("");
+                            else if (userSelection == "E")
+                            { itemService.resetPage(); }
+                    }
+                    itemService.Query = "";
                 }
                     else if (input == 9)
                     {
@@ -371,9 +367,6 @@ namespace ListManagement // Note: actual namespace depends on the project name.
             return true;
 
         }
-
-
-
 
         public static bool FillCalendarProperties(Appointment app)
         {

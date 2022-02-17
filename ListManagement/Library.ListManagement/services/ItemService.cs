@@ -15,7 +15,7 @@ namespace ListManagement.services
         private ListNavigator<Item> listNav;
         private string persistencePath;
         public string Query { get; set; }
-        //private string Query;
+
         private JsonSerializerSettings serializerSettings
             = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
 
@@ -32,15 +32,11 @@ namespace ListManagement.services
         {
             get
             {
-                //return Items.Where(i =>
-                //(!ShowComplete && !((i as ToDo)?.IsCompleted ?? true)) //incomplete only
-                //|| ShowComplete);
-
                 var incompleteItems = Items.Where(i =>
                 (!ShowComplete && !((i as ToDo)?.IsCompleted ?? true))
                 || ShowComplete);
                 
-                Console.WriteLine(incompleteItems); Console.WriteLine("cat");
+                
                 var searchResults = incompleteItems.Where(i => string.IsNullOrWhiteSpace(Query)
                 || (i?.Name?.Replace("\n", "").ToUpper()?.Contains(Query.ToUpper()) ?? false)
                 || (i?.Description?.ToUpper()?.Contains(Query.ToUpper()) ?? false)
@@ -111,11 +107,6 @@ namespace ListManagement.services
             File.WriteAllText(persistencePath, listJson);
         }
 
-        public void Search(string Q)
-        {
-            Query = Q;
-        }
-
         public Dictionary<object, Item> GetPage()
         {
             var page = listNav.GetCurrentPage();
@@ -153,6 +144,11 @@ namespace ListManagement.services
                 Console.WriteLine(e.Message);
                 return listNav.GetCurrentPage();
             }
+        }
+
+        public void resetPage()
+        {
+            listNav.GoToFirstPage();
         }
 
         private int nextId {

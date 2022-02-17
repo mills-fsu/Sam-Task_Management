@@ -20,7 +20,7 @@ namespace ListManagement.models
 
         public override string ToString()
         {
-            return $"{Name} {Description} From {Start} to {End}";
+            return $"{Id} {Name} {Description} From {Start.ToShortDateString()} to {End.ToShortDateString()}";
         }
     }
 }

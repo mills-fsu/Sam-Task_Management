@@ -16,8 +16,6 @@ namespace Library.ListManagement.helpers
             get
             {
                 var val = state.Count() / pageSize;
-                //Console.WriteLine(val);
-                //Console.WriteLine(state.Count());
                 if (state.Count() == 0)
                 {
                     val++;
@@ -57,8 +55,6 @@ namespace Library.ListManagement.helpers
 
         public Dictionary<object, T> GoForward()
         {
-            //Console.WriteLine(currentPage);
-            //Console.WriteLine(lastPage);
             if (currentPage + 1 > lastPage)
             {
                 throw new PageFaultException("Cannot navigate to the right of the last page in the list!");
