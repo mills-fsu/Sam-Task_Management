@@ -16,13 +16,18 @@ namespace Library.ListManagement.helpers
             get
             {
                 var val = state.Count() / pageSize;
-
-                if (state.Count() % pageSize > 0)
+                //Console.WriteLine(val);
+                //Console.WriteLine(state.Count());
+                if (state.Count() == 0)
+                {
+                    val++;
+                }
+                else if (state.Count() % pageSize > 0)
                 {
                     //if there is a partial page at the end, that is the actual last page.
                     val++;
                 }
-
+                //Console.WriteLine(val);
                 return val;
             }
         }
@@ -52,6 +57,8 @@ namespace Library.ListManagement.helpers
 
         public Dictionary<object, T> GoForward()
         {
+            //Console.WriteLine(currentPage);
+            //Console.WriteLine(lastPage);
             if (currentPage + 1 > lastPage)
             {
                 throw new PageFaultException("Cannot navigate to the right of the last page in the list!");
