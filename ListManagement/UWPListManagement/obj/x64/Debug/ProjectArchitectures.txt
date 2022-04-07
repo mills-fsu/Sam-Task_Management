@@ -1,0 +1,1 @@
+C:\Users\samue\Desktop\Proj3\ListManagement\UWPListManagement\UWPListManagement.csproj;x64

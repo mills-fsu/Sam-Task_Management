@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Roots >
+  <Roots.PropertyPathNames>
+    <RootPropertyPathName Name="EndTime" />
+    <RootPropertyPathName Name="EndDate" />
+    <RootPropertyPathName Name="StartTime" />
+    <RootPropertyPathName Name="StartDate" />
+    <RootPropertyPathName Name="Priority" />
+    <RootPropertyPathName Name="Description" />
+    <RootPropertyPathName Name="Name" />
+    <RootPropertyPathName Name="Attendees" />
+    <RootPropertyPathName Name="SelectedItem" />
+    <RootPropertyPathName Name="!IsCompleted" />
+    <RootPropertyPathName Name="IsCompleted" />
+    <RootPropertyPathName Name="IncompleteItems" />
+    <RootPropertyPathName Name="Items" />
+    <RootPropertyPathName Name="MVMFilteredItems" />
+    <RootPropertyPathName Name="Query" />
+  </Roots.PropertyPathNames>
+  <Roots.RootTypes>
+    <RootType FullName="Windows.UI.Xaml.Application" />
+    <RootType FullName="Windows.UI.Xaml.Controls.ContentDialog">
+      <RootProperty Name="Title" />
+      <RootProperty Name="PrimaryButtonText" />
+      <RootProperty Name="SecondaryButtonText" />
+      <RootProperty Name="Content" />
+      <RootEvent Name="PrimaryButtonClick" />
+      <RootEvent Name="SecondaryButtonClick" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.Grid">
+      <RootProperty Name="RowDefinitions" />
+      <RootProperty Name="Children" />
+      <RootProperty Name="ColumnDefinitions" />
+      <RootProperty Name="Resources" />
+      <RootMethod Name="GetRow" />
+      <RootMethod Name="SetRow" />
+      <RootMethod Name="GetColumn" />
+      <RootMethod Name="SetColumn" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.RowDefinition">
+      <RootProperty Name="Height" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.ColumnDefinition">
+      <RootProperty Name="Width" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.TextBlock">
+      <RootProperty Name="Text" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.DatePicker">
+      <RootProperty Name="SelectedDate" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.TimePicker">
+      <RootProperty Name="SelectedTime" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Data.Binding">
+      <RootProperty Name="Path" />
+      <RootProperty Name="Mode" />
+      <RootProperty Name="UpdateSourceTrigger" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.TextBox">
+      <RootProperty Name="Text" />
+      <RootEvent Name="BeforeTextChanging" />
+    </RootType>
+    <RootType FullName="UWPListManagement.Dialogs.AppointmentDialog" />
+    <RootType FullName="Windows.UI.Xaml.Controls.Page">
+      <RootProperty Name="Background" />
+      <RootProperty Name="Content" />
+    </RootType>
+    <RootType FullName="Microsoft.Xaml.DirectUI.ProxyTypes.ThemeResourceExtension" />
+    <RootType FullName="Windows.UI.Xaml.Media.SolidColorBrush">
+      <RootProperty Name="Color" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.Button">
+      <RootProperty Name="Content" />
+      <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="VerticalAlignment" />
+      <RootProperty Name="Style" />
+      <RootEvent Name="Click" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.Control">
+      <RootProperty Name="BorderBrush" />
+      <RootProperty Name="Background" />
+      <RootProperty Name="BorderThickness" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Setter">
+      <RootProperty Name="Property" />
+      <RootProperty Name="Value" />
+    </RootType>
+    <RootType FullName="Microsoft.Xaml.DirectUI.ProxyTypes.StaticResourceExtension" />
+    <RootType FullName="Windows.UI.Xaml.Controls.ListBox">
+      <RootProperty Name="ItemsSource" />
+      <RootProperty Name="SelectedItem" />
+      <RootProperty Name="Name" />
+      <RootProperty Name="Visibility" />
+    </RootType>
+    <RootType FullName="UWPListManagement.Dialogs.AttendeesDialog" />
+    <RootType FullName="UWPListManagement.Dialogs.ChoiceDialog" />
+    <RootType FullName="UWPListManagement.Dialogs.AddAttendee" />
+    <RootType FullName="UWPListManagement.Dialogs.InvalidEdit" />
+    <RootType FullName="UWPListManagement.Dialogs.ItemDialog" />
+    <RootType FullName="Windows.UI.Xaml.Controls.RadioButton">
+      <RootProperty Name="Name" />
+      <RootProperty Name="GroupName" />
+      <RootProperty Name="Content" />
+      <RootProperty Name="IsChecked" />
+    </RootType>
+    <RootType FullName="UWPListManagement.Dialogs.ToDoDialog" />
+    <RootType FullName="UWPListManagement.MainPage" />
+  </Roots.RootTypes>
+</Roots>
