@@ -25,14 +25,14 @@ namespace API.ListManagement.EC
                 var itemToUpdate = Filebase.Current.Appointments.FirstOrDefault(i => i.Id == app.Id);
                 if (itemToUpdate != null)
                 {
-                    var index = FakeDatabase.Appointments.IndexOf(itemToUpdate);
-                    Filebase.Current.Appointments.Remove(itemToUpdate);
-                    Filebase.Current.Appointments.Insert(index, new Appointment(app));
+                    var index = Filebase.Current.ToDos.FindIndex(i => i.Id == itemToUpdate.Id);
+                    Filebase.Current.DeleteApp(itemToUpdate.Id);
+                    Filebase.Current.AddOrUpdate(new Appointment(app));
                 }
                 else
                 {
                     //CREATE -- Fall-Back
-                    Filebase.Current.Appointments.Add(new Appointment(app));
+                    Filebase.Current.AddOrUpdate(new Appointment(app));
                 }
             }
 

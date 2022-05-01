@@ -29,6 +29,19 @@ namespace UWPListManagement.services
             }
         }
 
+        public ObservableCollection<ItemViewModel> FilteredItems(string Query)
+        {
+            itemService.GetFilteredItems(Query);
+            var answer = new ObservableCollection<ItemViewModel>();
+                foreach (ItemDTO item in itemService.MVMFilteredItems)
+                {
+                    answer.Add(new ItemViewModel(item));
+                }
+            return answer;
+            //return new ObservableCollection<ItemViewModel>(itemService.MVMFilteredItems);
+
+        }
+
         public async Task<ToDoDTO> AddUpdate(ItemViewModel item)
         {
             return await itemService.AddUpdate(item.BoundItem);

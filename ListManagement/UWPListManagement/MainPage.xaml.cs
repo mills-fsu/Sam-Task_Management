@@ -128,18 +128,19 @@ namespace UWPListManagement
         }
         private void SearchClick(object sender, RoutedEventArgs e)
         {
-            //var Query = ((DataContext as MainViewModel).Query);
-            //if (Query != null && Query != "" ){
-            //    (DataContext as MainViewModel).GetFilteredItems(Query);
-            //    SearchResults.Visibility = Visibility.Visible;
-            //    AllResults.Visibility = Visibility.Collapsed;
-            //}
-            //else
-            //{
-
-            //    SearchResults.Visibility = Visibility.Collapsed;
-            //    AllResults.Visibility = Visibility.Visible;
-            //}
+            var Query = ((DataContext as MainViewModel).Query);
+            if (Query != null && Query != "")
+            {
+                (DataContext as MainViewModel).GetFilteredItems(Query);
+                Console.WriteLine((DataContext as MainViewModel).MVMFilteredItems);
+                SearchResults.Visibility = Visibility.Visible;
+                AllResults.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                SearchResults.Visibility = Visibility.Collapsed;
+                AllResults.Visibility = Visibility.Visible;
+            }
         }
         private void IncompleteClick(object sender, RoutedEventArgs e)
         {

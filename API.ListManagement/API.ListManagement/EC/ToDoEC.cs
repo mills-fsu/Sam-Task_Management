@@ -28,15 +28,15 @@ namespace API.ListManagement.EC
                 var itemToUpdate = Filebase.Current.ToDos.FirstOrDefault(i => i.Id == todo.Id);
                 if (itemToUpdate != null)
                 {
-                    var index = Filebase.Current.ToDos.IndexOf(itemToUpdate);
-                    Filebase.Current.ToDos.Remove(itemToUpdate);
-                    Filebase.Current.ToDos.Insert(index, new ToDo(todo));
+                    var index = Filebase.Current.ToDos.FindIndex(i => i.Id == itemToUpdate.Id);
+                    Filebase.Current.DeleteTodo(itemToUpdate.Id);
+                    Filebase.Current.AddOrUpdate(new ToDo(todo));
                 }
                 else
                 {
                     //CREATE -- Fall-Back
-                    Filebase.Current.ToDos.Add(new ToDo(todo));
-                    Filebase.Current.ToDos.Add(new ToDo(todo));
+                    Filebase.Current.AddOrUpdate(new ToDo(todo));
+                    //Filebase.Current.ToDos.Add(new ToDo(todo));
                 }
             }
 

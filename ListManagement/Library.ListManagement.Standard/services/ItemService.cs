@@ -38,7 +38,25 @@ namespace ListManagement.services
         }
 
         public string Query { get; set; }
-
+        public ObservableCollection<ItemDTO> MVMFilteredItems { get; set; }
+        public ObservableCollection<ItemDTO> IncompleteItems { get; set; }
+        public ObservableCollection<ItemDTO> GetFilteredItems(string Query)
+        {
+            Query = Query.Replace("\n", "");
+            var results = items.Where(i => (i?.Name?.Replace("\n", "").ToUpper()?.Contains(Query.ToUpper()) ?? false)
+            //i is any item and its name contains the query
+            || (i?.Description?.Replace("\n", "").ToUpper()?.Contains(Query.ToUpper()) ?? false)
+            //or i is any item and its description contains the query
+            || ((i as AppointmentDTO)?.Attendees?.Select(t => t.ToUpper().Replace("\n", ""))?.Contains(Query.ToUpper()) ?? false));
+            //or i is an appointment and has the query in the attendees list
+            var filteredResults = new ObservableCollection<ItemDTO>(results);
+            if (MVMFilteredItems != null) { MVMFilteredItems.Clear(); }
+            foreach (var i in filteredResults)
+            {
+                MVMFilteredItems.Add(i);
+            }
+            return filteredResults;
+        }
         public IEnumerable<ItemDTO> FilteredItems
         {
             get
@@ -84,6 +102,8 @@ namespace ListManagement.services
             {
                 LoadFromDisk();
             }
+            MVMFilteredItems = new ObservableCollection<ItemDTO>();
+            IncompleteItems = new ObservableCollection<ItemDTO>();
         }
         public void Load(string path)
         {
@@ -105,7 +125,7 @@ namespace ListManagement.services
 
             payload.ToList().ForEach(items.Add);
 
-            listNav = new ListNavigator<ItemDTO>(FilteredItems, 2);
+            //listNav = new ListNavigator<ItemDTO>(FilteredItems, 2);
         }
 
         private void LoadFromDisk()
