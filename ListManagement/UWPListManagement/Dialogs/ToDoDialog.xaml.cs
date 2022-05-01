@@ -1,11 +1,14 @@
-﻿using ListManagement.models;
+﻿using Library.ListManagement.Standard.DTO;
+using ListManagement.models;
 using ListManagement.services;
+using ListManagement.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using UWPListManagement.ViewModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -22,35 +25,52 @@ namespace UWPListManagement.Dialogs
 {
     public sealed partial class ToDoDialog : ContentDialog
     {
+        private MainViewModel _mvm;
         private ObservableCollection<Item> _toDoCollection;
         public ToDoDialog()
         {
             this.InitializeComponent();
-            _toDoCollection = ItemService.Current.Items;
+            //_toDoCollection = ItemService.Current.Items;
 
-            DataContext = new ToDo();
+            DataContext = new ToDoDTO(new ToDo());
         }
 
-        public ToDoDialog(Item item)
+        public ToDoDialog(MainViewModel mvm)
         {
             this.InitializeComponent();
-            _toDoCollection = ItemService.Current.Items;
-            DataContext = item;
+            _mvm = mvm;
+
+            if (mvm != null && _mvm.SelectedItem != null)
+            {
+                var replacement = new ToDo();
+                replacement.Id = _mvm.SelectedItem.Id;
+                DataContext = new ToDoDTO(replacement);//mvm.SelectedItem;
+            }
+            else
+            {
+                DataContext = new ToDoDTO(new ToDo());
+            }
+            //_toDoCollection = ItemService.Current.Items;
+            //DataContext = item;
         }
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            var item = DataContext as ToDo;
-            if(_toDoCollection.Any(i => i.Id == item.Id))
-            {
-                var itemToUpdate = _toDoCollection.FirstOrDefault(i => i.Id == item.Id);
-                var index = _toDoCollection.IndexOf(itemToUpdate);
-                _toDoCollection.RemoveAt(index);
-                _toDoCollection.Insert(index, item);
-            } else
-            {
-                ItemService.Current.Add(DataContext as ToDo);
-            }
+            var item = new ItemViewModel(DataContext as ToDoDTO);
+
+            _mvm.Add(item);
+
+            //var item = DataContext as ToDo;
+            //if(_toDoCollection.Any(i => i.Id == item.Id))
+            //{
+            //    var itemToUpdate = _toDoCollection.FirstOrDefault(i => i.Id == item.Id);
+            //    var index = _toDoCollection.IndexOf(itemToUpdate);
+            //    _toDoCollection.RemoveAt(index);
+            //    _toDoCollection.Insert(index, item);
+            //} else
+            //{
+            //    ItemService.Current.Add(DataContext as ToDo);
+            //}
 
         }
 

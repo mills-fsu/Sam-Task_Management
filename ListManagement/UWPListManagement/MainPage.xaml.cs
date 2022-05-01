@@ -37,7 +37,7 @@ namespace UWPListManagement
 
         private async void AddClick(object sender, RoutedEventArgs e)
         {
-            var dialog = new ChoiceDialog();
+            var dialog = new ChoiceDialog(DataContext as MainViewModel);
             await dialog.ShowAsync();
         }
 
@@ -46,14 +46,14 @@ namespace UWPListManagement
             var item = ((DataContext as MainViewModel).SelectedItem);
             if (item != null)
             {
-                if (item as Appointment != null){
+                if (!item.IsTodo){
                     //is an appointment
-                    var dialog = new AppointmentDialog((DataContext as MainViewModel).SelectedItem);
+                    var dialog = new AppointmentDialog((DataContext as MainViewModel));
                     await dialog.ShowAsync();
                 }
                 else
                 {
-                    var dialog = new ToDoDialog((DataContext as MainViewModel).SelectedItem);
+                    var dialog = new ToDoDialog((DataContext as MainViewModel));
                     await dialog.ShowAsync();
                 }
             }
@@ -65,21 +65,30 @@ namespace UWPListManagement
             }
             
         }
-        private async void DeleteClick(object sender, RoutedEventArgs e)
+        private void DeleteClick(object sender, RoutedEventArgs e)
         {
-            var deleteItem = (DataContext as MainViewModel).SelectedItem;
-            var items = ((DataContext as MainViewModel).Items);
-            if (deleteItem != null)
+            var item = ((DataContext as MainViewModel).SelectedItem);
+            if (item.IsTodo)
             {
-                var index = items.IndexOf(deleteItem);
-                items.RemoveAt(index);
+                (DataContext as MainViewModel).Delete(item.Id);
             }
             else
             {
-                //haven't selected an item, force them via redirect
-                var invalid = new InvalidEdit();
-                await invalid.ShowAsync();
+                (DataContext as MainViewModel).DeleteApp(item.Id);
             }
+            //var deleteItem = (DataContext as MainViewModel).SelectedItem;
+            //var items = ((DataContext as MainViewModel).Items);
+            //if (deleteItem != null)
+            //{
+            //    var index = items.IndexOf(deleteItem);
+            //    items.RemoveAt(index);
+            //}
+            //else
+            //{
+            //    //haven't selected an item, force them via redirect
+            //    var invalid = new InvalidEdit();
+            //    await invalid.ShowAsync();
+            //}
 
         }
         private async void AttendeeClick(object sender, RoutedEventArgs e)
@@ -87,7 +96,7 @@ namespace UWPListManagement
             var item = ((DataContext as MainViewModel).SelectedItem);
             if (item != null)
             {
-                if (item as Appointment != null)
+                if (new Appointment(item.BoundAppointment) != null)
                 {
                     //is an appointment
                     //var dialog = new AttendeesDialog((DataContext as MainViewModel).SelectedItem);
@@ -119,35 +128,35 @@ namespace UWPListManagement
         }
         private void SearchClick(object sender, RoutedEventArgs e)
         {
-            var Query = ((DataContext as MainViewModel).Query);
-            if (Query != null && Query != "" ){
-                (DataContext as MainViewModel).GetFilteredItems(Query);
-                SearchResults.Visibility = Visibility.Visible;
-                AllResults.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
+            //var Query = ((DataContext as MainViewModel).Query);
+            //if (Query != null && Query != "" ){
+            //    (DataContext as MainViewModel).GetFilteredItems(Query);
+            //    SearchResults.Visibility = Visibility.Visible;
+            //    AllResults.Visibility = Visibility.Collapsed;
+            //}
+            //else
+            //{
 
-                SearchResults.Visibility = Visibility.Collapsed;
-                AllResults.Visibility = Visibility.Visible;
-            }
+            //    SearchResults.Visibility = Visibility.Collapsed;
+            //    AllResults.Visibility = Visibility.Visible;
+            //}
         }
         private void IncompleteClick(object sender, RoutedEventArgs e)
         {
-            if (IncompleteResults.Visibility == Visibility.Collapsed)
-            {
-                (DataContext as MainViewModel).GetIncompleteItems();
-                IncompleteResults.Visibility = Visibility.Visible;
-                AllResults.Visibility = Visibility.Collapsed;
-                SearchResults.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
+            //if (IncompleteResults.Visibility == Visibility.Collapsed)
+            //{
+            //    (DataContext as MainViewModel).GetIncompleteItems();
+            //    IncompleteResults.Visibility = Visibility.Visible;
+            //    AllResults.Visibility = Visibility.Collapsed;
+            //    SearchResults.Visibility = Visibility.Collapsed;
+            //}
+            //else
+            //{
 
-                IncompleteResults.Visibility = Visibility.Collapsed;
-                AllResults.Visibility = Visibility.Visible;
-                SearchResults.Visibility = Visibility.Visible;
-            }
+            //    IncompleteResults.Visibility = Visibility.Collapsed;
+            //    AllResults.Visibility = Visibility.Visible;
+            //    SearchResults.Visibility = Visibility.Visible;
+            //}
         }
         private void LoadClick(object sender, RoutedEventArgs e)
         {
@@ -155,7 +164,7 @@ namespace UWPListManagement
         }
         private void SaveClick(object sender, RoutedEventArgs e)
         {
-            (DataContext as MainViewModel).Save(persistencePath);
+            (DataContext as MainViewModel).Save();
         }
     }
 }

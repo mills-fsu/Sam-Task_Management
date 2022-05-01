@@ -1,5 +1,7 @@
-﻿using ListManagement.models;
+﻿using Library.ListManagement.Standard.DTO;
+using ListManagement.models;
 using ListManagement.services;
+using ListManagement.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -29,18 +31,21 @@ namespace UWPListManagement.Dialogs
     /// </summary>
     public sealed partial class AttendeesDialog : Page, INotifyPropertyChanged
     {
+        private MainViewModel _mvm;
         public Appointment selectedAppointment { get; set; }
         public ObservableCollection<string> Attendees { get; set; }
 
         public AttendeesDialog()
         {
             //Attendees = new ObservableCollection<String>(selectedAppointment.Attendees);
+            //DataContext = this;
+            DataContext = new AppointmentDTO(new Appointment());
             this.InitializeComponent();
-            DataContext = this;
+
         }
-        public AttendeesDialog(Item item)
+        public AttendeesDialog(MainViewModel mvm)
         {
-            selectedAppointment = (item as Appointment);
+            selectedAppointment = (new Appointment(mvm.SelectedItem.BoundAppointment));
             
             this.InitializeComponent();
         }
@@ -60,9 +65,13 @@ namespace UWPListManagement.Dialogs
             
             if (SelectedItem != null)
             {
-                var index = ItemService.Current.Items.IndexOf(selectedAppointment);
-                (ItemService.Current.Items.ElementAt(index) as Appointment).Attendees.Remove(SelectedItem);
-                Attendees = new ObservableCollection<String>(selectedAppointment.Attendees);
+                
+                selectedAppointment.Attendees.Remove(Name);
+                var item = new ItemViewModel(new AppointmentDTO(selectedAppointment));
+                _mvm.Add(item);
+                //var index = ItemService.Current.Items.IndexOf(selectedAppointment);
+                //(ItemService.Current.Items.ElementAt(index) as Appointment).Attendees.Remove(SelectedItem);
+                //Attendees = new ObservableCollection<String>(selectedAppointment.Attendees);
                 NotifyPropertyChanged("Attendees");
             }
             else

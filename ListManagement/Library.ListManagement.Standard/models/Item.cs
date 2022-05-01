@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ListManagement.models
 {
-    [JsonConverter(typeof(ItemJsonConverter))]
+    [JsonConverter(typeof(ItemDTOConverter))]
     public class Item: IItem
     {
         private int priority;

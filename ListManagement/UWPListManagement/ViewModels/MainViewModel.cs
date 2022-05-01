@@ -1,36 +1,54 @@
-﻿using ListManagement.models;
+﻿using Library.ListManagement.Standard.DTO;
+using ListManagement.models;
 using ListManagement.services;
+using ListManagement.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using UWPListManagement.services;
 
 namespace UWPListManagement.ViewModels
 {
-    public class MainViewModel
+    public class MainViewModel : INotifyPropertyChanged
     {
+        private ItemServiceProxy itemService = new ItemServiceProxy();
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
         private JsonSerializerSettings serializerSettings
             = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
-        private ItemService itemService = ItemService.Current;
+        //private ItemService itemService = ItemService.Current;
 
         public MainViewModel()
         {
-            MVMFilteredItems = new ObservableCollection<Item>();
-            IncompleteItems = new ObservableCollection<Item>();
+            //MVMFilteredItems = new ObservableCollection<Item>();
+            //IncompleteItems = new ObservableCollection<Item>();
         }
 
         public MainViewModel(string path)
         {
             //Load(path);
-            MVMFilteredItems = new ObservableCollection<Item>();
-            IncompleteItems = new ObservableCollection<Item>();
+            //MVMFilteredItems = new ObservableCollection<Item>();
+            //IncompleteItems = new ObservableCollection<Item>();
         }
 
-        public ObservableCollection<Item> Items
+        //public ObservableCollection<Item> Items_List
+        //{
+        //    get
+        //    {
+        //        return itemService.Items;
+        //    }
+        //}
+        public ObservableCollection<ItemViewModel> Items
         {
             get
             {
@@ -40,50 +58,62 @@ namespace UWPListManagement.ViewModels
 
         public string Query { get; set; }
 
-        public ObservableCollection<Item> MVMFilteredItems { get; set; }
-        
-        public ObservableCollection<Item>GetFilteredItems(string Query)
-        {
-             Query = Query.Replace("\n", "");
-             var results = Items.Where(i => (i?.Name?.Replace("\n", "").ToUpper()?.Contains(Query.ToUpper()) ?? false)
-             //i is any item and its name contains the query
-             || (i?.Description?.Replace("\n", "").ToUpper()?.Contains(Query.ToUpper()) ?? false)
-             //or i is any item and its description contains the query
-             || ((i as Appointment)?.Attendees?.Select(t => t.ToUpper().Replace("\n", ""))?.Contains(Query.ToUpper()) ?? false));
-             //or i is an appointment and has the query in the attendees list
-             var filteredResults = new ObservableCollection<Item>(results);
-            if (MVMFilteredItems != null) { MVMFilteredItems.Clear(); }
-            foreach(var i in filteredResults)
-            {
+        //public ObservableCollection<Item> MVMFilteredItems { get; set; }
 
-                MVMFilteredItems.Add(i);          
-             }
-             return filteredResults;
-        }
-        public ObservableCollection<Item> IncompleteItems { get; set; }
-        public ObservableCollection<Item> GetIncompleteItems()
-        {
-            var results = Items.Where(i =>
-                !((i as ToDo)?.IsCompleted ?? true));
-            var incompleteResults = new ObservableCollection<Item>(results);
-            if (IncompleteItems != null) { IncompleteItems.Clear(); }
-            foreach (var i in incompleteResults)
-            {
+        //public ObservableCollection<Item>GetFilteredItems(string Query)
+        //{
+        //     Query = Query.Replace("\n", "");
+        //     var results = Items.Where(i => (i?.Name?.Replace("\n", "").ToUpper()?.Contains(Query.ToUpper()) ?? false)
+        //     //i is any item and its name contains the query
+        //     || (i?.Description?.Replace("\n", "").ToUpper()?.Contains(Query.ToUpper()) ?? false)
+        //     //or i is any item and its description contains the query
+        //     || ((i as Appointment)?.Attendees?.Select(t => t.ToUpper().Replace("\n", ""))?.Contains(Query.ToUpper()) ?? false));
+        //     //or i is an appointment and has the query in the attendees list
+        //     var filteredResults = new ObservableCollection<Item>(results);
+        //    if (MVMFilteredItems != null) { MVMFilteredItems.Clear(); }
+        //    foreach(var i in filteredResults)
+        //    {
 
-                IncompleteItems.Add(i);
-            }
-            return incompleteResults;
-        }
-        public Item SelectedItem
+        //        MVMFilteredItems.Add(i);          
+        //     }
+        //     return filteredResults;
+        //}
+        //public ObservableCollection<Item> IncompleteItems { get; set; }
+        //public ObservableCollection<Item> GetIncompleteItems()
+        //{
+        //    var results = Items.Where(i =>
+        //        !((i as ToDo)?.IsCompleted ?? true));
+        //    var incompleteResults = new ObservableCollection<Item>(results);
+        //    if (IncompleteItems != null) { IncompleteItems.Clear(); }
+        //    foreach (var i in incompleteResults)
+        //    {
+
+        //        IncompleteItems.Add(i);
+        //    }
+        //    return incompleteResults;
+        //}
+        public ItemViewModel SelectedItem
         {
             get; set;
         }
 
-        public void Add(Item item)
+        public async void Add(ItemViewModel item)
         {
-            itemService.Add(item);
+            if (item.BoundItem is ToDoDTO)
+            {
+                await itemService.AddUpdate(item);
+            }
+            else
+            {
+                await itemService.AddUpdateApp(item);
+            }
+            
+            Refresh();
         }
-
+        public void Refresh()
+        {
+            NotifyPropertyChanged("Items");
+        }
         public void Load(string path)
         {
             MainViewModel mvm;
@@ -104,15 +134,44 @@ namespace UWPListManagement.ViewModels
 
             }
         }
-        public void Save(string path)
+        public void Save()
         {
 
-            var mvmJson = JsonConvert.SerializeObject(this, serializerSettings);
-            if (File.Exists(path))
-            {
-                File.Delete(path);
-            }
-            File.WriteAllText(path, mvmJson);
+            //var mvmJson = JsonConvert.SerializeObject(this, serializerSettings);
+            //if (File.Exists(path))
+            //{
+            //    File.Delete(path);
+            //}
+            //File.WriteAllText(path, mvmJson);
+            itemService.Save();
+        }
+        public void Delete(int id)
+        {
+            //if (item.BoundItem is ToDoDTO)
+            //{
+            //    await itemService?.Delete(id);
+            //}
+            //else
+            //{
+            //    await itemService?.Delete(id);
+            //}
+
+            //Refresh();
+            //if (item.BoundItem is ToDoDTO)
+            //{
+            //    itemService?.Delete(id); Refresh();
+            //}
+            //else
+            //{
+            //    itemService?.DeleteApp(id); Refresh();
+            //}
+
+            //Refresh();
+            itemService?.Delete(id); Refresh();
+        }
+        public void DeleteApp(int id)
+        {
+            itemService?.DeleteApp(id); Refresh();
         }
     }
 }

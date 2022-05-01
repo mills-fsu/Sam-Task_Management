@@ -1,10 +1,13 @@
-﻿using ListManagement.models;
+﻿using Library.ListManagement.Standard.DTO;
+using ListManagement.models;
 using ListManagement.services;
+using ListManagement.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using UWPListManagement.ViewModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -22,6 +25,7 @@ namespace UWPListManagement.Dialogs
     public sealed partial class AddAttendee : ContentDialog
     {
         private Appointment selectedAppointment;
+        private MainViewModel _mvm;
         public AddAttendee(Appointment appointment)
         {
             this.InitializeComponent();
@@ -33,6 +37,8 @@ namespace UWPListManagement.Dialogs
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             selectedAppointment.Attendees.Add(Name);
+            var item = new ItemViewModel(new AppointmentDTO(selectedAppointment));
+            _mvm.Add(item);
         }
 
         private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

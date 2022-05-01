@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library.ListManagement.Standard.DTO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -20,8 +21,33 @@ namespace ListManagement.models
             Attendees = new List<string>();
             StartDate = DateTime.Now;
             EndDate = DateTime.Now;
+            StartTime = TimeSpan.Zero;
+            EndTime = TimeSpan.Zero;
+            Name = null;
+            Description = null;
         }
-
+        public Appointment(Appointment app)
+        {
+            Name = app.Name;
+            Description = app.Description;
+            Attendees = app.Attendees;
+            StartDate = app.StartDate;
+            EndDate = app.EndDate;
+            StartTime = app.StartTime;
+            EndTime = app.EndTime;
+            Priority = app.Priority;
+        }
+        public Appointment(AppointmentDTO app)
+        {
+            Name = app.Name;
+            Description = app.Description;
+            Attendees = app.Attendees;
+            StartDate = app.Start;
+            EndDate = app.EndDate;
+            StartTime = app.StartTime;
+            EndTime = app.EndTime;
+            Priority=app.Priority;
+        }
         public override string ToString()
         {
             return $"{Name} {Description} From {Start} to {End}. Priority: {Priority}";

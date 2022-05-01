@@ -1,5 +1,7 @@
-﻿using ListManagement.models;
+﻿using Library.ListManagement.Standard.DTO;
+using ListManagement.models;
 using ListManagement.services;
+using ListManagement.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
+using UWPListManagement.ViewModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -25,35 +28,51 @@ namespace UWPListManagement.Dialogs
     public sealed partial class AppointmentDialog : ContentDialog
     {
         private ObservableCollection<Item> _toDoCollection;
+        private MainViewModel _mvm;
         public AppointmentDialog()
         {
             this.InitializeComponent();
-            _toDoCollection = ItemService.Current.Items;
-            DataContext = new Appointment();
+            //_toDoCollection = ItemService.Current.Items;
+            DataContext = new AppointmentDTO(new Appointment());
         }
-        public AppointmentDialog(Item item)
+        public AppointmentDialog(MainViewModel mvm)
         {
             this.InitializeComponent();
-            _toDoCollection = ItemService.Current.Items;
-            DataContext = item;
+            _mvm = mvm;
+
+            if (mvm != null && _mvm.SelectedItem != null)
+            {
+                var replacement = new Appointment();
+                replacement.Id = _mvm.SelectedItem.Id;
+                DataContext = new AppointmentDTO(replacement);//mvm.SelectedItem;
+            }
+            else
+            {
+                DataContext = new AppointmentDTO(new Appointment());
+            }
+                //_toDoCollection = ItemService.Current.Items;
+            //DataContext = item;
         }
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            var item = DataContext as Appointment;
+            //var item = DataContext as Appointment;
+            var item = new ItemViewModel(DataContext as AppointmentDTO);
+
+            _mvm.Add(item);
             //item.Start = Date1;
             //item.End = Date2;
-            if (_toDoCollection.Any(i => i.Id == item.Id))
-            {
-                var itemToUpdate = _toDoCollection.FirstOrDefault(i => i.Id == item.Id);
-                var index = _toDoCollection.IndexOf(itemToUpdate);
-                _toDoCollection.RemoveAt(index);
-                _toDoCollection.Insert(index, item);
-            }
-            else
-            {
-                ItemService.Current.Add(DataContext as Appointment);
-            }
+            //if (_toDoCollection.Any(i => i.Id == item.Id))
+            //{
+            //    var itemToUpdate = _toDoCollection.FirstOrDefault(i => i.Id == item.Id);
+            //    var index = _toDoCollection.IndexOf(itemToUpdate);
+            //    _toDoCollection.RemoveAt(index);
+            //    _toDoCollection.Insert(index, item);
+            //}
+            //else
+            //{
+            //    ItemService.Current.Add(DataContext as Appointment);
+            //}
             //NotifyPropertyChanged("StartDate");
         }
 

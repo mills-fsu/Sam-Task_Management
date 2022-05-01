@@ -1,4 +1,5 @@
-﻿using ListManagement.models;
+﻿using Library.ListManagement.Standard.DTO;
+using ListManagement.models;
 using Newtonsoft.Json.Linq;
 using System;
 
@@ -14,7 +15,7 @@ namespace Library.ListManagement.Standard.utilities
             {
                 return new ToDo();
             }
-            else if (jObject["startDate"] != null || jObject["StartDate"] != null)
+            else if (jObject["start"] != null || jObject["Start"] != null)
             {
                 return new Appointment();
             }

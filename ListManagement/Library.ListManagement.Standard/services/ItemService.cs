@@ -1,4 +1,5 @@
 ﻿using Library.ListManagement.helpers;
+using Library.ListManagement.Standard.DTO;
 using Library.ListManagement.Standard.utilities;
 using ListManagement.models;
 using Newtonsoft.Json;
@@ -14,8 +15,8 @@ namespace ListManagement.services
 {
     public class ItemService
     {
-        private ObservableCollection<Item> items;
-        private ListNavigator<Item> listNav;
+        private ObservableCollection<ItemDTO> items;
+        private ListNavigator<ItemDTO> listNav;
         private string persistencePath;
         private JsonSerializerSettings serializerSettings
             = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
@@ -23,20 +24,27 @@ namespace ListManagement.services
         static private ItemService instance;
 
         public bool ShowComplete { get; set; }
-        public ObservableCollection<Item> Items {
-            get {
+        public ObservableCollection<ItemDTO> Items {
+            get
+            {
+                var payload = JsonConvert
+                    .DeserializeObject<List<ItemDTO>>(new WebRequestHandler()
+                    .Get("http://localhost:5436/Item").Result);
+                items.Clear();
+                payload.ForEach(items.Add);
+
                 return items;
             }
         }
 
         public string Query { get; set; }
 
-        public IEnumerable<Item> FilteredItems
+        public IEnumerable<ItemDTO> FilteredItems
         {
             get
             {
                 var incompleteItems = Items.Where(i =>
-                (!ShowComplete && !((i as ToDo)?.IsCompleted ?? true)) //incomplete only
+                (!ShowComplete && !((i as ToDoDTO)?.IsCompleted ?? true)) //incomplete only
                 || ShowComplete);
                 //show complete (all)
 
@@ -46,7 +54,7 @@ namespace ListManagement.services
                 //i is any item and its name contains the query
                 || (i?.Description?.ToUpper()?.Contains(Query.ToUpper()) ?? false)                                        
                 //or i is any item and its description contains the query
-                ||((i as Appointment)?.Attendees?.Select(t => t.ToUpper())?.Contains(Query.ToUpper()) ?? false));         
+                ||((i as AppointmentDTO)?.Attendees?.Select(t => t.ToUpper())?.Contains(Query.ToUpper()) ?? false));         
                 //or i is an appointment and has the query in the attendees list
                 return searchResults;
             }
@@ -66,9 +74,43 @@ namespace ListManagement.services
 
         private ItemService()
         {
-            items = new ObservableCollection<Item>();
-
+            items = new ObservableCollection<ItemDTO>();
             persistencePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\SaveData.json";
+            try
+            {
+                LoadFromServer();
+            }
+            catch (Exception)
+            {
+                LoadFromDisk();
+            }
+        }
+        public void Load(string path)
+        {
+            persistencePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\SaveData.json";
+            try
+            {
+                LoadFromServer();
+            }
+            catch (Exception)
+            {
+                LoadFromDisk();
+            }
+        }
+        private void LoadFromServer()
+        {
+            var payload = JsonConvert
+            .DeserializeObject<List<ItemDTO>>(new WebRequestHandler()
+            .Get("http://localhost:5436/Item").Result);
+
+            payload.ToList().ForEach(items.Add);
+
+            listNav = new ListNavigator<ItemDTO>(FilteredItems, 2);
+        }
+
+        private void LoadFromDisk()
+        {
+
             if (File.Exists(persistencePath))
             {
                 try
@@ -77,67 +119,125 @@ namespace ListManagement.services
                     if (state != null)
                     {
                         items = JsonConvert
-                        .DeserializeObject<ObservableCollection<Item>>(state, serializerSettings) ?? new ObservableCollection<Item>();
+                        .DeserializeObject<ObservableCollection<ItemDTO>>(state, serializerSettings) ?? new ObservableCollection<ItemDTO>();
                     }
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     File.Delete(persistencePath);
-                    items = new ObservableCollection<Item>();
+                    items = new ObservableCollection<ItemDTO>();
                 }
             }
-
-            listNav = new ListNavigator<Item>(FilteredItems, 2);
+        }
+        public async Task<ToDoDTO> AddUpdate(ItemDTO i)
+        {
+            var toDoStr = await new WebRequestHandler().Post("http://localhost:5436/ToDo/AddOrUpdate", i);
+            var todo = JsonConvert.DeserializeObject<ToDoDTO>(toDoStr);
+            //var item = DataContext as ToDo;
+            //if(items.Any(j => j.Id == i.Id))
+            //{
+            //    var itemToUpdate = items.FirstOrDefault(j => j.Id == i.Id);
+            //    var index = items.IndexOf(itemToUpdate);
+            //    items.RemoveAt(index);
+            //    items.Insert(index, i);
+            //}
+            //else
+            //{
+            //    ItemService.Current.Add(DataContext as ToDo);
+            //}
+            return todo;
         }
 
-        public void Add(Item i)
+        public async Task<ItemDTO> Remove(int id)
         {
-            if (i.Id <= 0)
-            {
-                i.Id = nextId;
-            }
-            items.Add(i);
+            var deletedToDoStr = await new WebRequestHandler().Post("http://localhost:5436/ToDo/Delete", new DeleteItemDTO { IdToDelete = id });
+            return JsonConvert.DeserializeObject<ItemDTO>(deletedToDoStr);
         }
 
-        public void Remove(Item i)
+
+        public async Task<AppointmentDTO> AddUpdateApp(ItemDTO i)
         {
-            items.Remove(i);
+            var appStr = await new WebRequestHandler().Post("http://localhost:5436/Appointment/AddOrUpdate", i);
+            var app = JsonConvert.DeserializeObject<AppointmentDTO>(appStr);
+            return app;
+        }
+        public async Task<ItemDTO> DeleteApp(int id)
+        {
+            var deletedToDoStr = await new WebRequestHandler().Post("http://localhost:5436/Appointment/Delete", new DeleteItemDTO { IdToDelete = id });
+            return JsonConvert.DeserializeObject<ItemDTO>(deletedToDoStr);
         }
 
         public void Save()
         {
-
+            //first save to disk (pass-through cache)
             var listJson = JsonConvert.SerializeObject(Items, serializerSettings);
             if (File.Exists(persistencePath))
             {
                 File.Delete(persistencePath);
             }
             File.WriteAllText(persistencePath, listJson);
+
+            //post request to add each of these items to the list-- COMMENTING OUT FOR PROGRAMMING ASSIGNMENT 3
+            foreach (var i in Items)
+            {
+                if (i is ToDo)
+                {
+                    JsonConvert.DeserializeObject<List<Item>>(
+                    new WebRequestHandler().Post("http://localhost:5436/ToDo/AddOrUpdate", i).Result);
+                }
+            }
         }
 
-        public Dictionary<object, Item> GetPage()
+
+        //public void Add(Item i)
+        //{
+        //    if (i.Id <= 0)
+        //    {
+        //        i.Id = NextId;
+        //    }
+        //    items.Add(i);
+        //}
+
+        //public void Remove(Item i)
+        //{
+        //    items.Remove(i);
+        //}
+
+        //public void Save()
+        //{
+
+        //    var listJson = JsonConvert.SerializeObject(Items, serializerSettings);
+        //    if (File.Exists(persistencePath))
+        //    {
+        //        File.Delete(persistencePath);
+        //    }
+        //    File.WriteAllText(persistencePath, listJson);
+        //}
+
+        public Dictionary<object, ItemDTO> GetPage()
         {
             var page = listNav.GetCurrentPage();
             if (listNav.HasNextPage)
             {
-                page.Add("N", new Item { Name = "Next" });
+                //page.Add("N", new Item { Name = "Next" });
             } if (listNav.HasPreviousPage)
             {
-                page.Add("P", new Item { Name = "Previous" });
+                //page.Add("P", new Item { Name = "Previous" });
             }
             return page;
         }
 
-        public Dictionary<object, Item> NextPage()
+        public Dictionary<object, ItemDTO> NextPage()
         {
             return listNav.GoForward();
         }
 
-        public Dictionary<object, Item> PreviousPage()
+        public Dictionary<object, ItemDTO> PreviousPage()
         {
             return listNav.GoBackward();
         }
 
-        private int nextId {
+        public int NextId {
             get
             {
                 if(Items.Any())

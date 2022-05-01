@@ -1,4 +1,5 @@
-﻿using ListManagement.interfaces;
+﻿using Library.ListManagement.Standard.DTO;
+using ListManagement.interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,6 +23,30 @@ namespace ListManagement.models
             {
                 isCompleted = value;
             }
+        }
+        public ToDo()
+        {
+
+        }
+        public ToDo(ToDo t)
+        {
+            Deadline = t.Deadline;
+            IsCompleted = t.IsCompleted;
+            Priority = t.Priority;
+            Name = t.Name;
+            Description = t.Description;
+
+            Id = t.Id;
+        }
+        public ToDo(ToDoDTO dto)
+        {
+            Deadline = dto.Deadline;
+            IsCompleted = dto.IsCompleted;
+            Priority = dto.Priority;
+            Name = dto.Name;
+            Description = dto.Description;
+
+            Id = dto.Id;
         }
 
         public override string ToString()

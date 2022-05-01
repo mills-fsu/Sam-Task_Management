@@ -315,19 +315,6 @@
           "build/runtime.win10-x86.Microsoft.Net.UWPCoreRuntimeSdk.props": {},
           "build/runtime.win10-x86.Microsoft.Net.UWPCoreRuntimeSdk.targets": {}
         }
-      },
-      "Library.ListManagement.Standard/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "dependencies": {
-          "Newtonsoft.Json": "13.0.1"
-        },
-        "compile": {
-          "bin/placeholder/Library.ListManagement.Standard.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Library.ListManagement.Standard.dll": {}
-        }
       }
     },
     "UAP,Version=v10.0.17763/win10-arm": {
@@ -822,19 +809,6 @@
         "build": {
           "build/runtime.win10-x86.Microsoft.Net.UWPCoreRuntimeSdk.props": {},
           "build/runtime.win10-x86.Microsoft.Net.UWPCoreRuntimeSdk.targets": {}
-        }
-      },
-      "Library.ListManagement.Standard/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "dependencies": {
-          "Newtonsoft.Json": "13.0.1"
-        },
-        "compile": {
-          "bin/placeholder/Library.ListManagement.Standard.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Library.ListManagement.Standard.dll": {}
         }
       }
     },
@@ -1332,19 +1306,6 @@
           "build/runtime.win10-x86.Microsoft.Net.UWPCoreRuntimeSdk.props": {},
           "build/runtime.win10-x86.Microsoft.Net.UWPCoreRuntimeSdk.targets": {}
         }
-      },
-      "Library.ListManagement.Standard/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "dependencies": {
-          "Newtonsoft.Json": "13.0.1"
-        },
-        "compile": {
-          "bin/placeholder/Library.ListManagement.Standard.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Library.ListManagement.Standard.dll": {}
-        }
       }
     },
     "UAP,Version=v10.0.17763/win10-arm64-aot": {
@@ -1841,19 +1802,6 @@
           "build/runtime.win10-x86.Microsoft.Net.UWPCoreRuntimeSdk.props": {},
           "build/runtime.win10-x86.Microsoft.Net.UWPCoreRuntimeSdk.targets": {}
         }
-      },
-      "Library.ListManagement.Standard/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "dependencies": {
-          "Newtonsoft.Json": "13.0.1"
-        },
-        "compile": {
-          "bin/placeholder/Library.ListManagement.Standard.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Library.ListManagement.Standard.dll": {}
-        }
       }
     },
     "UAP,Version=v10.0.17763/win10-x64": {
@@ -2348,19 +2296,6 @@
         "build": {
           "build/runtime.win10-x86.Microsoft.Net.UWPCoreRuntimeSdk.props": {},
           "build/runtime.win10-x86.Microsoft.Net.UWPCoreRuntimeSdk.targets": {}
-        }
-      },
-      "Library.ListManagement.Standard/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "dependencies": {
-          "Newtonsoft.Json": "13.0.1"
-        },
-        "compile": {
-          "bin/placeholder/Library.ListManagement.Standard.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Library.ListManagement.Standard.dll": {}
         }
       }
     },
@@ -2858,19 +2793,6 @@
           "build/runtime.win10-x86.Microsoft.Net.UWPCoreRuntimeSdk.props": {},
           "build/runtime.win10-x86.Microsoft.Net.UWPCoreRuntimeSdk.targets": {}
         }
-      },
-      "Library.ListManagement.Standard/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "dependencies": {
-          "Newtonsoft.Json": "13.0.1"
-        },
-        "compile": {
-          "bin/placeholder/Library.ListManagement.Standard.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Library.ListManagement.Standard.dll": {}
-        }
       }
     },
     "UAP,Version=v10.0.17763/win10-x86": {
@@ -3365,19 +3287,6 @@
         },
         "native": {
           "runtimes/win10-x86/nativeassets/uap10.0.15138/clrcompression.dll": {}
-        }
-      },
-      "Library.ListManagement.Standard/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "dependencies": {
-          "Newtonsoft.Json": "13.0.1"
-        },
-        "compile": {
-          "bin/placeholder/Library.ListManagement.Standard.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Library.ListManagement.Standard.dll": {}
         }
       }
     },
@@ -3874,19 +3783,6 @@
         "build": {
           "build/runtime.win10-x86.Microsoft.Net.UWPCoreRuntimeSdk.props": {},
           "build/runtime.win10-x86.Microsoft.Net.UWPCoreRuntimeSdk.targets": {}
-        }
-      },
-      "Library.ListManagement.Standard/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "dependencies": {
-          "Newtonsoft.Json": "13.0.1"
-        },
-        "compile": {
-          "bin/placeholder/Library.ListManagement.Standard.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Library.ListManagement.Standard.dll": {}
         }
       }
     }
@@ -8354,17 +8250,12 @@
         "runtimes/win10-x86/lib/uap10.0.15138/netstandard.dll",
         "runtimes/win10-x86/nativeassets/uap10.0.15138/clrcompression.dll"
       ]
-    },
-    "Library.ListManagement.Standard/1.0.0": {
-      "type": "project",
-      "path": "../Library.ListManagement.Standard/Library.ListManagement.Standard.csproj",
-      "msbuildProject": "../Library.ListManagement.Standard/Library.ListManagement.Standard.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "UAP,Version=v10.0.17763": [
-      "Library.ListManagement.Standard >= 1.0.0",
-      "Microsoft.NETCore.UniversalWindowsPlatform >= 6.2.13"
+      "Microsoft.NETCore.UniversalWindowsPlatform >= 6.2.13",
+      "Newtonsoft.Json >= 13.0.1"
     ]
   },
   "packageFolders": {
@@ -8400,11 +8291,7 @@
       },
       "frameworks": {
         "uap10.0.17763": {
-          "projectReferences": {
-            "C:\\Users\\samue\\Desktop\\Sam-Task_Management\\ListManagement\\Library.ListManagement.Standard\\Library.ListManagement.Standard.csproj": {
-              "projectPath": "C:\\Users\\samue\\Desktop\\Sam-Task_Management\\ListManagement\\Library.ListManagement.Standard\\Library.ListManagement.Standard.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       }
     },
@@ -8414,6 +8301,10 @@
           "Microsoft.NETCore.UniversalWindowsPlatform": {
             "target": "Package",
             "version": "[6.2.13, )"
+          },
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "[13.0.1, )"
           }
         },
         "imports": [
