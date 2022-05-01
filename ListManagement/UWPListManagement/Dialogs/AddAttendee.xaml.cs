@@ -26,11 +26,16 @@ namespace UWPListManagement.Dialogs
     {
         private Appointment selectedAppointment;
         private MainViewModel _mvm;
-        public AddAttendee(Appointment appointment)
+        public AddAttendee(Appointment appointment, MainViewModel mvm)
         {
+            _mvm = mvm;
             this.InitializeComponent();
             DataContext = this;
             selectedAppointment = appointment;
+            if (selectedAppointment.Attendees == null)
+            {
+                selectedAppointment.Attendees = new List<string>();
+            }
         }
 
 

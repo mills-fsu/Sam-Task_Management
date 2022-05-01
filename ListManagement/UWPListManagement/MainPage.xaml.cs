@@ -100,7 +100,7 @@ namespace UWPListManagement
                 {
                     //is an appointment
                     //var dialog = new AttendeesDialog((DataContext as MainViewModel).SelectedItem);
-                    this.Frame.Navigate(typeof(AttendeesDialog), (DataContext as MainViewModel).SelectedItem);
+                    this.Frame.Navigate(typeof(AttendeesDialog), (DataContext as MainViewModel));
                 }
                 else
                 {

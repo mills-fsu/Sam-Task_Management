@@ -45,7 +45,8 @@ namespace UWPListManagement.Dialogs
         }
         public AttendeesDialog(MainViewModel mvm)
         {
-            selectedAppointment = (new Appointment(mvm.SelectedItem.BoundAppointment));
+            _mvm = mvm;
+            selectedAppointment = (new Appointment(_mvm.SelectedItem.BoundAppointment));
             
             this.InitializeComponent();
         }
@@ -55,7 +56,7 @@ namespace UWPListManagement.Dialogs
         }
         private async void AttendeeAdd(object sender, RoutedEventArgs e)
         {
-            var dialog = new AddAttendee(selectedAppointment);
+            var dialog = new AddAttendee(selectedAppointment, _mvm);
             await dialog.ShowAsync();
             Attendees = new ObservableCollection<String>(selectedAppointment.Attendees);
             NotifyPropertyChanged("Attendees");
@@ -87,8 +88,15 @@ namespace UWPListManagement.Dialogs
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            selectedAppointment = (Appointment)e.Parameter;
-            Attendees = new ObservableCollection<String>(selectedAppointment.Attendees);
+            selectedAppointment = new Appointment( (e.Parameter as MainViewModel).SelectedItem.BoundAppointment );
+            if (selectedAppointment.Attendees != null)
+            {
+                Attendees = new ObservableCollection<String>(selectedAppointment.Attendees);
+            }
+            else
+            {
+                Attendees = new ObservableCollection<String>();
+            }
             NotifyPropertyChanged("Attendees");
             base.OnNavigatedTo(e);
         }

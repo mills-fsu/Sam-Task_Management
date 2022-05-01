@@ -1,4 +1,5 @@
-﻿using API.ListManagement.database;
+﻿using Api.ToDoApplication.Persistence;
+using API.ListManagement.database;
 using Library.ListManagement.Standard.DTO;
 using ListManagement.models;
 using ListManagement.services;
@@ -9,7 +10,7 @@ namespace API.ListManagement.EC
     {
         public IEnumerable<ToDoDTO> Get()
         {
-            return FakeDatabase.ToDos.Select(t => new ToDoDTO(t));
+            return Filebase.Current.ToDos.Select(t => new ToDoDTO(t));
         }
 
         public ToDoDTO AddOrUpdate(ToDoDTO todo)
@@ -18,34 +19,36 @@ namespace API.ListManagement.EC
             {
                 //CREATE
                 todo.Id = ItemService.Current.NextId;
-                FakeDatabase.ToDos.Add(new ToDo(todo));
+                //Filebase.Current.ToDos.Add(new ToDo(todo));
+                Filebase.Current.AddOrUpdate(new ToDo(todo));
             }
             else
             {
                 //UPDATE
-                var itemToUpdate = FakeDatabase.ToDos.FirstOrDefault(i => i.Id == todo.Id);
+                var itemToUpdate = Filebase.Current.ToDos.FirstOrDefault(i => i.Id == todo.Id);
                 if (itemToUpdate != null)
                 {
-                    var index = FakeDatabase.ToDos.IndexOf(itemToUpdate);
-                    FakeDatabase.ToDos.Remove(itemToUpdate);
-                    FakeDatabase.ToDos.Insert(index, new ToDo(todo));
+                    var index = Filebase.Current.ToDos.IndexOf(itemToUpdate);
+                    Filebase.Current.ToDos.Remove(itemToUpdate);
+                    Filebase.Current.ToDos.Insert(index, new ToDo(todo));
                 }
                 else
                 {
                     //CREATE -- Fall-Back
-                    FakeDatabase.ToDos.Add(new ToDo(todo));
+                    Filebase.Current.ToDos.Add(new ToDo(todo));
+                    Filebase.Current.ToDos.Add(new ToDo(todo));
                 }
             }
 
             return todo;
         }
 
-        public ToDoDTO Delete(int id)
+        public ToDoDTO Delete(int Id)
         {
-            var todoToDelete = FakeDatabase.ToDos.FirstOrDefault(i => i.Id == id);
+            var todoToDelete = Filebase.Current.ToDos.FirstOrDefault(i => i.Id == Id);
             if (todoToDelete != null)
             {
-                FakeDatabase.ToDos.Remove(todoToDelete);
+                Filebase.Current.DeleteTodo(Id);
 
 
                 return new ToDoDTO(todoToDelete);

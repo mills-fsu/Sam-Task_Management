@@ -35,18 +35,24 @@ namespace Library.ListManagement.Standard.DTO
             Name = app.Name;
             Description = app.Description;
             Attendees = app.Attendees;
-            StartDate = app.Start;
-            EndDate = app.End;
+            StartDate = app.StartDate;
+            EndDate = app.EndDate;
+            StartTime = app.StartTime;
+            EndTime = app.EndTime;
             Priority = app.Priority;
+            Id = app.Id;
         }
         public AppointmentDTO(AppointmentDTO app)
         {
             Name = app.Name;
             Description = app.Description;
             Attendees = app.Attendees;
-            StartDate = app.Start;
-            EndDate = app.End;
+            StartDate = app.StartDate;
+            EndDate = app.EndDate;
+            StartTime = app.StartTime;
+            EndTime = app.EndTime;
             Priority = app.Priority;
+            Id=app.Id;
         }
         public override string ToString()
         {

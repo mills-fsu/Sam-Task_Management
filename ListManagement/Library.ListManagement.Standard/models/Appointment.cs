@@ -36,6 +36,7 @@ namespace ListManagement.models
             StartTime = app.StartTime;
             EndTime = app.EndTime;
             Priority = app.Priority;
+            Id = app.Id;
         }
         public Appointment(AppointmentDTO app)
         {
@@ -47,6 +48,7 @@ namespace ListManagement.models
             StartTime = app.StartTime;
             EndTime = app.EndTime;
             Priority=app.Priority;
+            Id = app.Id;
         }
         public override string ToString()
         {

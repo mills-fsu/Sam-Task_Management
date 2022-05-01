@@ -30,13 +30,13 @@
     <AppXManifest Include="C:\Users\samue\Desktop\Sam-Task_Management\ListManagement\UWPListManagement\bin\x64\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2022-05-01T06:32:11.466</Modified>
+      <Modified>2022-05-01T13:46:54.220</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\samue\Desktop\Sam-Task_Management\ListManagement\UWPListManagement\bin\x64\Debug\UWPListManagement.exe">
       <PackagePath>entrypoint\UWPListManagement.exe</PackagePath>
-      <Modified>2022-05-01T06:32:10.801</Modified>
+      <Modified>2022-05-01T13:46:53.447</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\samue\.nuget\packages\newtonsoft.json\13.0.1\lib\netstandard2.0\Newtonsoft.Json.dll">
       <PackagePath>Newtonsoft.Json.dll</PackagePath>
@@ -48,7 +48,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\samue\Desktop\Sam-Task_Management\ListManagement\Library.ListManagement.Standard\bin\Debug\netstandard2.0\Library.ListManagement.Standard.dll">
       <PackagePath>Library.ListManagement.Standard.dll</PackagePath>
-      <Modified>2022-05-01T06:23:09.920</Modified>
+      <Modified>2022-05-01T13:46:32.712</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\bin\10.0.19041.0\XamlCompiler\Microsoft.UI.Xaml.Markup.winmd">
       <PackagePath>Microsoft.UI.Xaml.Markup.winmd</PackagePath>
@@ -98,39 +98,39 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\samue\Desktop\Sam-Task_Management\ListManagement\UWPListManagement\bin\x64\Debug\App.xbf">
       <PackagePath>App.xbf</PackagePath>
-      <Modified>2022-05-01T06:32:10.726</Modified>
+      <Modified>2022-05-01T13:46:53.369</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\samue\Desktop\Sam-Task_Management\ListManagement\UWPListManagement\bin\x64\Debug\Dialogs\AppointmentDialog.xbf">
       <PackagePath>Dialogs\AppointmentDialog.xbf</PackagePath>
-      <Modified>2022-05-01T06:32:10.726</Modified>
+      <Modified>2022-05-01T13:46:53.370</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\samue\Desktop\Sam-Task_Management\ListManagement\UWPListManagement\bin\x64\Debug\Dialogs\AttendeesDialog.xbf">
       <PackagePath>Dialogs\AttendeesDialog.xbf</PackagePath>
-      <Modified>2022-05-01T06:32:10.726</Modified>
+      <Modified>2022-05-01T13:46:53.370</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\samue\Desktop\Sam-Task_Management\ListManagement\UWPListManagement\bin\x64\Debug\Dialogs\ChoiceDialog.xbf">
       <PackagePath>Dialogs\ChoiceDialog.xbf</PackagePath>
-      <Modified>2022-05-01T06:32:10.726</Modified>
+      <Modified>2022-05-01T13:46:53.370</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\samue\Desktop\Sam-Task_Management\ListManagement\UWPListManagement\bin\x64\Debug\Dialogs\AddAttendee.xbf">
       <PackagePath>Dialogs\AddAttendee.xbf</PackagePath>
-      <Modified>2022-05-01T06:32:10.726</Modified>
+      <Modified>2022-05-01T13:46:53.370</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\samue\Desktop\Sam-Task_Management\ListManagement\UWPListManagement\bin\x64\Debug\Dialogs\InvalidEdit.xbf">
       <PackagePath>Dialogs\InvalidEdit.xbf</PackagePath>
-      <Modified>2022-05-01T06:32:10.726</Modified>
+      <Modified>2022-05-01T13:46:53.371</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\samue\Desktop\Sam-Task_Management\ListManagement\UWPListManagement\bin\x64\Debug\Dialogs\ItemDialog.xbf">
       <PackagePath>Dialogs\ItemDialog.xbf</PackagePath>
-      <Modified>2022-05-01T06:32:10.727</Modified>
+      <Modified>2022-05-01T13:46:53.371</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\samue\Desktop\Sam-Task_Management\ListManagement\UWPListManagement\bin\x64\Debug\Dialogs\ToDoDialog.xbf">
       <PackagePath>Dialogs\ToDoDialog.xbf</PackagePath>
-      <Modified>2022-05-01T06:32:10.727</Modified>
+      <Modified>2022-05-01T13:46:53.371</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\samue\Desktop\Sam-Task_Management\ListManagement\UWPListManagement\bin\x64\Debug\MainPage.xbf">
       <PackagePath>MainPage.xbf</PackagePath>
-      <Modified>2022-05-01T06:32:10.727</Modified>
+      <Modified>2022-05-01T13:46:53.371</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\UnionMetadata\10.0.19041.0\Windows.winmd">
       <PackagePath>WinMetadata\Windows.winmd</PackagePath>
@@ -138,11 +138,11 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\samue\Desktop\Sam-Task_Management\ListManagement\UWPListManagement\bin\x64\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2022-05-01T06:23:14.116</Modified>
+      <Modified>2022-05-01T13:46:53.531</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\samue\Desktop\Sam-Task_Management\ListManagement\UWPListManagement\bin\x64\Debug\Core\UWPListManagement.exe">
       <PackagePath>UWPListManagement.exe</PackagePath>
-      <Modified>2022-05-01T06:32:11.454</Modified>
+      <Modified>2022-05-01T13:46:54.216</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

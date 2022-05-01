@@ -17,7 +17,7 @@ namespace API.ListManagement.Controllers
         }
 
         [HttpGet()]
-        public IEnumerable<AppointmentDTO> Get()
+        public IEnumerable<ItemDTO> Get()
         {
             return new AppointmentEC().Get();
         }
