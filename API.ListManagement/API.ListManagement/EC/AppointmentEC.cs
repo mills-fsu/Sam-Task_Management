@@ -1,4 +1,4 @@
-﻿using Api.ToDoApplication.Persistence;
+﻿
 using API.ListManagement.database;
 using Library.ListManagement.Standard.DTO;
 using ListManagement.models;
@@ -9,7 +9,7 @@ namespace API.ListManagement.EC
     {
         public IEnumerable<AppointmentDTO> Get()
         {
-            return Filebase.Current.Appointments.Select(t => new AppointmentDTO(t));
+            return FakeDatabase.Appointments.Select(t => new AppointmentDTO(t));
         }
         public AppointmentDTO AddOrUpdate(AppointmentDTO app)
         {
@@ -17,22 +17,22 @@ namespace API.ListManagement.EC
             {
                 //CREATE
                 app.Id = ItemService.Current.NextId;
-                Filebase.Current.AddOrUpdate(new Appointment(app));
+                FakeDatabase.Appointments.Add(new Appointment(app));
             }
             else
             {
                 //UPDATE
-                var itemToUpdate = Filebase.Current.Appointments.FirstOrDefault(i => i.Id == app.Id);
+                var itemToUpdate = FakeDatabase.Appointments.FirstOrDefault(i => i.Id == app.Id);
                 if (itemToUpdate != null)
                 {
                     var index = FakeDatabase.Appointments.IndexOf(itemToUpdate);
-                    Filebase.Current.Appointments.Remove(itemToUpdate);
-                    Filebase.Current.Appointments.Insert(index, new Appointment(app));
+                    FakeDatabase.Appointments.Remove(itemToUpdate);
+                    FakeDatabase.Appointments.Insert(index, new Appointment(app));
                 }
                 else
                 {
                     //CREATE -- Fall-Back
-                    Filebase.Current.Appointments.Add(new Appointment(app));
+                    FakeDatabase.Appointments.Add(new Appointment(app));
                 }
             }
 
@@ -41,10 +41,10 @@ namespace API.ListManagement.EC
 
         public AppointmentDTO Delete(int Id)
         {
-            var appToDelete = Filebase.Current.Appointments.FirstOrDefault(i => i.Id == Id);
+            var appToDelete = FakeDatabase.Appointments.FirstOrDefault(i => i.Id == Id);
             if (appToDelete != null)
             {
-                Filebase.Current.DeleteApp(Id);
+                FakeDatabase.Appointments.Remove(appToDelete);
             }
             else
             {

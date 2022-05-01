@@ -30,14 +30,14 @@ namespace UWPListManagement.ViewModels
 
         public MainViewModel()
         {
-            //MVMFilteredItems = new ObservableCollection<Item>();
+            MVMFilteredItems = new ObservableCollection<ItemViewModel>();
             //IncompleteItems = new ObservableCollection<Item>();
         }
 
         public MainViewModel(string path)
         {
             //Load(path);
-            //MVMFilteredItems = new ObservableCollection<Item>();
+            MVMFilteredItems = new ObservableCollection<ItemViewModel>();
             //IncompleteItems = new ObservableCollection<Item>();
         }
 
@@ -58,8 +58,13 @@ namespace UWPListManagement.ViewModels
 
         public string Query { get; set; }
 
-        //public ObservableCollection<Item> MVMFilteredItems { get; set; }
-
+        public ObservableCollection<ItemViewModel> MVMFilteredItems { get; set; }
+        public void GetFilteredItems(string Query)
+        {
+            MVMFilteredItems = itemService.FilteredItems(Query); ;
+            NotifyPropertyChanged("MVMFilteredItems");
+            //return itemService.FilteredItems(Query);
+        }
         //public ObservableCollection<Item>GetFilteredItems(string Query)
         //{
         //     Query = Query.Replace("\n", "");

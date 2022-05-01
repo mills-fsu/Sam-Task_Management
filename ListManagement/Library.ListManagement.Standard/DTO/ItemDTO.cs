@@ -44,9 +44,15 @@ namespace Library.ListManagement.Standard.DTO
         {
             return $"{Id} {Name} {Description}";
         }
+        public ItemDTO(){
 
-        public ItemDTO()
+        }
+        public ItemDTO(Appointment i)
         {
+            Name = i.Name;
+            Description = i.Description;
+            Id = i.Id;
+            Priority = i.Priority;
 
         }
 

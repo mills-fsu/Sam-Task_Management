@@ -39,26 +39,46 @@ namespace ListManagement.services
 
         public string Query { get; set; }
 
-        public IEnumerable<ItemDTO> FilteredItems
+        public ObservableCollection<ItemDTO> MVMFilteredItems { get; set; }
+        public ObservableCollection<ItemDTO> IncompleteItems { get; set; }
+        public ObservableCollection<ItemDTO> GetFilteredItems(string Query)
         {
-            get
+            Query = Query.Replace("\n", "");
+            var results = items.Where(i => (i?.Name?.Replace("\n", "").ToUpper()?.Contains(Query.ToUpper()) ?? false)
+            //i is any item and its name contains the query
+            || (i?.Description?.Replace("\n", "").ToUpper()?.Contains(Query.ToUpper()) ?? false)
+            //or i is any item and its description contains the query
+            || ((i as AppointmentDTO)?.Attendees?.Select(t => t.ToUpper().Replace("\n", ""))?.Contains(Query.ToUpper()) ?? false));
+            //or i is an appointment and has the query in the attendees list
+            var filteredResults = new ObservableCollection<ItemDTO>(results);
+            if (MVMFilteredItems != null) { MVMFilteredItems.Clear(); }
+            foreach (var i in filteredResults)
             {
-                var incompleteItems = Items.Where(i =>
-                (!ShowComplete && !((i as ToDoDTO)?.IsCompleted ?? true)) //incomplete only
-                || ShowComplete);
-                //show complete (all)
 
-                var searchResults = incompleteItems.Where(i => string.IsNullOrWhiteSpace(Query)
-                //there is no query
-                || (i?.Name?.ToUpper()?.Contains(Query.ToUpper()) ?? false)   
-                //i is any item and its name contains the query
-                || (i?.Description?.ToUpper()?.Contains(Query.ToUpper()) ?? false)                                        
-                //or i is any item and its description contains the query
-                ||((i as AppointmentDTO)?.Attendees?.Select(t => t.ToUpper())?.Contains(Query.ToUpper()) ?? false));         
-                //or i is an appointment and has the query in the attendees list
-                return searchResults;
+                MVMFilteredItems.Add(i);
             }
+            return filteredResults;
         }
+        //public IEnumerable<ItemDTO> FilteredItems
+        //{
+        //    get
+        //    {
+        //        var incompleteItems = Items.Where(i =>
+        //        (!ShowComplete && !((i as ToDoDTO)?.IsCompleted ?? true)) //incomplete only
+        //        || ShowComplete);
+        //        //show complete (all)
+
+        //        var searchResults = incompleteItems.Where(i => string.IsNullOrWhiteSpace(Query)
+        //        //there is no query
+        //        || (i?.Name?.ToUpper()?.Contains(Query.ToUpper()) ?? false)   
+        //        //i is any item and its name contains the query
+        //        || (i?.Description?.ToUpper()?.Contains(Query.ToUpper()) ?? false)                                        
+        //        //or i is any item and its description contains the query
+        //        ||((i as AppointmentDTO)?.Attendees?.Select(t => t.ToUpper())?.Contains(Query.ToUpper()) ?? false));         
+        //        //or i is an appointment and has the query in the attendees list
+        //        return searchResults;
+        //    }
+        //}
 
         public static ItemService Current
         {
@@ -84,6 +104,8 @@ namespace ListManagement.services
             {
                 LoadFromDisk();
             }
+            MVMFilteredItems = new ObservableCollection<ItemDTO>();
+            IncompleteItems = new ObservableCollection<ItemDTO>();
         }
         public void Load(string path)
         {
@@ -105,7 +127,7 @@ namespace ListManagement.services
 
             payload.ToList().ForEach(items.Add);
 
-            listNav = new ListNavigator<ItemDTO>(FilteredItems, 2);
+            //listNav = new ListNavigator<ItemDTO>(FilteredItems, 2);
         }
 
         private void LoadFromDisk()
