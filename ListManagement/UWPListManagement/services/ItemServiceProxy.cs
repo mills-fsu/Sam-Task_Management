@@ -32,12 +32,12 @@ namespace UWPListManagement.services
         {
             itemService.GetFilteredItems(Query);
             var answer = new ObservableCollection<ItemViewModel>();
-            foreach(ItemDTO i in itemService.MVMFilteredItems)
+            foreach(ItemDTO item in itemService.MVMFilteredItems)
             {
-                answer.Add(new ItemViewModel(i));
+                answer.Add(new ItemViewModel(item));
             }
             return answer;
-            //return new ObservableCollection<ItemViewModel>(itemService.MVMFilteredItems);
+
         }
         public async Task<ToDoDTO> AddUpdate(ItemViewModel item)
         {

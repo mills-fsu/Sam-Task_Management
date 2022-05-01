@@ -175,6 +175,11 @@ namespace ListManagement.services
             var deletedToDoStr = await new WebRequestHandler().Post("http://localhost:5436/ToDo/Delete", new DeleteItemDTO { IdToDelete = id });
             return JsonConvert.DeserializeObject<ItemDTO>(deletedToDoStr);
         }
+        //public async Task<ObservableCollection<ItemDTO>> Search(string Query)
+        //{
+        //    string searchResult = await new WebRequestHandler().Post("http://localhost:5436/Item/Search", Query);
+        //    return JsonConvert.DeserializeObject<ObservableCollection<ItemDTO>>(searchResult);
+        //}
 
 
         public async Task<AppointmentDTO> AddUpdateApp(ItemDTO i)
